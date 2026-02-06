@@ -49,21 +49,7 @@ public class Word {
         }catch(IOException e) {
             System.out.println("Ошибка. Не удалось найти файл. Пожалуйста, переместите файл words.txt в папку проекта" + path);
             throw new RuntimeException(e);
-
-//            return GetRandomNumberLineFromFile(path_to_words, charset);//random.nextLong(Files.lines(Paths.get(path_to_words), charset).count());
-//            }catch (FileNotFoundException err) {
-//                System.out.println("Ошибка. Не удалось найти файл. Пожалуйста, переместите файл words.txt в папку проекта");
-//            } catch (IOException ex) {
-//                System.out.println("Ошибка. Не удалось найти файл. Пожалуйста, переместите файл words.txt в папку проекта");
-//
-//            }
         }
-//        } catch (IOException e) {
-//            System.out.println("ЫЫЫ Ошибка. Не удалось найти файл. Пожалуйста, переместите файл words.txt в папку проекта" + e);
-//            System.exit(1);
-//            throw new RuntimeException(e);
-//        }
-//        return 0;
     }
 
     private String getRandomWord(String path, Charset charset, short low_threshold, short upper_threshold) {
@@ -109,7 +95,7 @@ public class Word {
             return randomW;
     }
 
-    //проверка, есть файл со словами words.txt в папке проекта. Если нет(а по умолчанию его нет), проверяем есть ли мой файл с гитхаба
+    // проверка, есть файл со словами words.txt в папке проекта. Если нет(а по умолчанию его нет), проверяем есть ли мой файл с гитхаба
     private String checkFile (String path, String path_to_words){
         File file_1 = new File(path_to_words);
         File file_2 = new File(path);
@@ -149,7 +135,7 @@ public class Word {
     Word() throws IOException { //в конструкторах почему-то ставят модификатор public. Лично я не хочу ставить, чтобы файлы, не находящиеся
         our_word = getRandomWord (checkFile(path, path_to_words), checkCharset()); // в моей папке не смогли вызвать мой конструктор
         countSymbols = (byte) randomW.length();             //можно после charset ввести нижний и верхний пороги числа букв
-        assert our_word != null;
+        assert our_word != null;            // это меня ide попросила добавить, я не знаю что это
         arrayOfSymbolsWord = our_word.toCharArray();
     }
 

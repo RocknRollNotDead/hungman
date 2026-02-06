@@ -17,7 +17,7 @@ public class Game {
     private List<Byte> indexsOfOpenSymbols = new ArrayList<>(); // здесь хранятся номера букв, не помеченных решётками
     private boolean game = true;
     private byte stages = 6;    // 6 8 или 10 - количество максимальных ошибок. от них зависит как будет рисоваться виселица
-    private String letter;          // буква введённая пользователем
+    private String userAnswer;          // буква введённая пользователем
     private String closeWord;       // строка, где закрытые буквы уже закрыты
     private byte countOfOpenSymbols = 2; // количество изначально открытых символов в слове
     private byte[] indexOfRandom = new byte[countOfOpenSymbols];    // индексы рандомных чисел, столько индексов сколько указано выше
@@ -65,18 +65,18 @@ public class Game {
 
 
         Scanner scanner = new Scanner(System.in);
-        letter = scanner.nextLine();
-        conditionCheck(letter);     // проверка, не написал ли человек "назад" или "выход"
+        userAnswer = scanner.nextLine();
+        conditionCheck(userAnswer);     // проверка, не написал ли человек "назад" или "выход"
         if (!game)
             return false;       // вот такой вот костыль, если при проверке юзер указал назад, то не проверяем букву
         boolean match;
-        while (letter.length() != 1) {
+        while (userAnswer.length() != 1) {
             System.out.println("Ошибка! вы ввели больше одной буквы или не ввели букву. Введите одну букву:");
-            letter = scanner.nextLine();
+            userAnswer = scanner.nextLine();
         }
-        if (letter.matches("[а-я]") && russian || // проверка на корректность символа
-                                            !russian && letter.matches("[a-z]") || letter.matches("[ё]") && russian){
-            match = true;           // буква ё не находится в регексе диапазона а-я, поэтому приходится пользоваться таким костылём
+        if (userAnswer.matches("[а-яё]") && russian || // проверка на корректность символа
+                                            !russian && userAnswer.matches("[a-z]")){
+            match = true;
         }
         else
             match = false;
@@ -85,23 +85,23 @@ public class Game {
             return readLetter(array, word);
         }
 //        scanner.close();   //хочу закрыть сканнер, но при повторном вызове после закрытия он выдаёт ошибку. со сканнером пока не разобрался
+        char letter = userAnswer.charAt(0);
         return checkLetter (array, letter, word);
     }
 
-    private boolean checkLetter (List <Byte> array, String letter, char[] word){
+    private boolean checkLetter (List <Byte> array, char letter, char[] word){
 
         boolean isAddOrNo = false;
         boolean isUserArrayOfIndexHas = false;
         boolean guess = false;
         boolean isUserArrayLetHas = false;
-        char let = letter.charAt(0);
 
 
-        if(userLet.contains(let)) {   //если эта буква есть в коллекции введённых пользователем букв, то ставим тру
+        if(userLet.contains(letter)) {   //если эта буква есть в коллекции введённых пользователем букв, то ставим тру
             isUserArrayLetHas = true;
         }
         else{
-            userLet.add(let);
+            userLet.add(letter);
             isUserArrayLetHas = false;
         }
 
@@ -109,7 +109,7 @@ public class Game {
 
 // проверка есть ли введённая буква в уже отгаданных
 // и вывод что буква уже открыта только если такой буквы нет в изначально открытых символах
-            if (let==word[b]){ // если в загаданном слове есть эта буква
+            if (letter==word[b]){ // если в загаданном слове есть эта буква
                 // проверять открыта ли буква или нет
                 // то есть
                 // проверять есть ли b в коллекции array
@@ -117,12 +117,12 @@ public class Game {
                                          // индекс для новой или существующей буквы и мы его точно должны вписать
                     guess = true;
                 }
-                if(indexsOfUserAddLet.contains(b)) {   //если этот индекс есть в коллекции пользовательских индексов, то ставим тру
+                if(indexsOfUserAddLet.contains(b)) {   // если этот индекс есть в коллекции пользовательских индексов, то ставим тру
                     isUserArrayOfIndexHas = true;
                 }
                 isAddOrNo = addToArray(array, b);
                 if (isAddOrNo){
-                    indexsOfUserAddLet.add(b);    //записывем индексы чисел, которые открылись, в нашу коллекцию indexsOfUsersLet
+                    indexsOfUserAddLet.add(b);    // записывем индексы чисел, которые открылись, в нашу коллекцию indexsOfUsersLet
                 }
             }
         }
